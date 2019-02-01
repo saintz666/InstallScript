@@ -31,6 +31,8 @@ IS_ENTERPRISE="False"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
+IS_ZIP_SOURCE_AVAILABLE="True"
+
 ##
 ###  WKHTMLTOPDF download links
 ## === Ubuntu Trusty x64 & x32 === (for other distributions please replace these two links,
@@ -64,7 +66,7 @@ echo -e "\n--- Installing Python 3 + pip3 --"
 sudo apt-get install python3 python3-pip -y
 
 echo -e "\n---- Install tool packages ----"
-sudo apt-get install wget git bzr python-pip gdebi-core -y
+sudo apt-get install wget git bzr python-pip gdebi-core unzip -y
 
 echo -e "\n---- Install python packages ----"
 sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev -y
@@ -118,7 +120,12 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install ODOO
 #--------------------------------------------------
 echo -e "\n==== Installing ODOO Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
+if [ $IS_ZIP_SOURCE_AVAILABLE = "True" ]; then
+  sudo unzip odoo-12.0.zip $OE_HOME
+  sudo mv $OE_HOME/odoo-12.0/ $OE_HOME_EXT
+else
+  sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
+fi
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # Odoo Enterprise install!
