@@ -122,7 +122,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 echo -e "\n==== Installing ODOO Server ===="
 if [ $IS_ZIP_SOURCE_AVAILABLE = "True" ]; then
   sudo unzip odoo-12.0.zip $OE_HOME
-  sudo mv $OE_HOME/odoo-12.0/ $OE_HOME_EXT
+  sudo mv $OE_HOME/odoo-12.0/ -d $OE_HOME_EXT
 else
   sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
 fi
